@@ -1,35 +1,30 @@
-
+import time
 import cv2
 import numpy as np
-import time
 from PIL import Image, ImageGrab
+import pyautogui
 
+clickBorder = [2, 294, 519, 457]
 
-# Clicking border 
-clickBorder = [2,294,519,457]
+def shoot_fnct(screen):
+    global clickBorder
 
-im2 = ImageGrab.grab(bbox = clickBorder)
-im2.show()
-
-image = cv2.imread(im2)
-gray = cv2.cvtColor(image,cv2.COLOR_RGB2GRAY)
-screen = np.array(im2)
-cv2.imshow("Gray image", gray)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-
-
-
-print(screen[:3])
-#im2.show()
-
-#time.sleep(5)
-#cv2.destroyAllWindows()
-
-#screen = np.array(ImageGrab.grab(bbox=clickBorder))
-#screen = cv2.cvtColor(screen, cv2.COLOR_RGB2GRAY)
+    for y in range(len(screen)):
+        for x in range(len(screen[y])):
+            if screen[y][x] < 10:
+                actual_x = x + clickBorder[0]
+                actual_y = y + clickBorder[1]
+                pyautogui.click(actual_x, actual_y, clicks=1)
 
 
 
 
 
+#takes screenshot of the clickborder, then converts it to a numpy array.
+while True:
+    
+    startTime = time.time()
+    screen = np.array(ImageGrab.grab(bbox=clickBorder))
+    screen = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
+
+    print(screen)
